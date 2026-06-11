@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Qala News - новости Казахстана</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="topbar">
+      <a class="logo" href="index.html" aria-label="Qala News на главную">Qala<span>News</span></a>
+      <button class="nav-toggle" type="button" aria-label="Открыть меню" aria-expanded="false">Menu</button>
+      <nav class="main-nav" aria-label="Основная навигация">
+        <a href="index.html" data-category="Все">Все</a>
+        <a href="index.html?category=Политика" data-category="Политика">Политика</a>
+        <a href="index.html?category=Экономика" data-category="Экономика">Экономика</a>
+        <a href="index.html?category=Спорт" data-category="Спорт">Спорт</a>
+      </nav>
+      <form class="search" role="search">
+        <label class="visually-hidden" for="searchInput">Поиск новостей</label>
+        <input id="searchInput" type="search" placeholder="Поиск">
+        <button type="submit">Найти</button>
+      </form>
+      <div id="userMenu" class="user-menu"></div>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section class="headline-section" aria-labelledby="mainTitle">
+      <div class="section-kicker">Главная новость дня</div>
+      <div id="featuredNews" class="featured-news"></div>
+    </section>
+
+    <aside class="latest-panel" aria-labelledby="latestTitle">
+      <div class="section-heading">
+        <h2 id="latestTitle">Последние новости</h2>
+        <span id="latestCount"></span>
+      </div>
+      <div id="latestNews" class="latest-list"></div>
+    </aside>
+
+    <section class="news-feed" aria-labelledby="feedTitle">
+      <div class="section-heading">
+        <h2 id="feedTitle">Лента новостей</h2>
+      </div>
+      <div id="newsGrid" class="news-grid"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 Qala News.</p>
+    <nav aria-label="Социальные сети">
+      <a href="https://t.me/+Urut7VPDKbQxYmI6">Telegram</a>
+      <a href="https://www.instagram.com/bekzhanovsayss?igsh=MWJ6Z3Zsa282enZwcg==">Instagram</a>
+    </nav>
+  </footer>
+
+  <script src="api.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
