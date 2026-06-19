@@ -95,8 +95,7 @@ textarea {
 }
 
 .main-nav,
-.search,
-.user-menu {
+.search {
   display: none;
 }
 
@@ -172,6 +171,8 @@ textarea {
 }
 
 .user-menu {
+  display: flex;
+  justify-content: left;
   align-items: center;
   gap: 8px;
   color: var(--muted);
@@ -730,8 +731,6 @@ time {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
-
-/* Добавьте в конец файла style.css */
 
 /* Стили для кнопок админа на главной странице */
 .admin-actions-card button {
