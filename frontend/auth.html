@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Qala News - Вход / Регистрация</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="topbar">
+      <a class="logo" href="index.html" aria-label="Qala News на главную">Qala<span>News</span></a>
+    </div>
+  </header>
+
+  <main class="auth-shell">
+    <section class="auth-card">
+      <h1 id="authTitle">Вход</h1>
+      <form class="auth-form" id="authForm">
+        <label>
+          Имя пользователя
+          <input type="text" id="username" placeholder="Ваше имя пользователя" required>
+        </label>
+        <label>
+          Email
+          <input type="email" id="email" placeholder="Ваш email" required>
+        </label>
+        <label>
+          Пароль
+          <input type="password" id="password" placeholder="Ваш пароль" required>
+        </label>
+        <p id="formMessage" class="form-message"></p>
+        <button type="submit" class="primary-button" id="submitBtn">Войти</button>
+      </form>
+      <p class="auth-hint" id="authHint">
+        Нет аккаунта? <a href="#" id="toggleAuth">Зарегистрироваться</a>
+      </p>
+    </section>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

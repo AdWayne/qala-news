@@ -4,22 +4,23 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Qala News - новости Казахстана</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header class="site-header">
     <div class="topbar">
       <a class="logo" href="index.html" aria-label="Qala News на главную">Qala<span>News</span></a>
-      <button class="nav-toggle" type="button" aria-label="Открыть меню" aria-expanded="false">Menu</button>
+      <button class="nav-toggle" type="button" aria-label="Открыть меню" aria-expanded="false">☰</button>
       <nav class="main-nav" aria-label="Основная навигация">
-        <a href="index.html" data-category="Все">Все</a>
+        <a href="index.html" data-category="Все" class="active">Все</a>
         <a href="index.html?category=Политика" data-category="Политика">Политика</a>
         <a href="index.html?category=Экономика" data-category="Экономика">Экономика</a>
         <a href="index.html?category=Спорт" data-category="Спорт">Спорт</a>
+        <a href="index.html?category=Культура" data-category="Культура">Культура</a>
       </nav>
-      <form class="search" role="search">
+      <form class="search" role="search" id="searchForm">
         <label class="visually-hidden" for="searchInput">Поиск новостей</label>
-        <input id="searchInput" type="search" placeholder="Поиск">
+        <input id="searchInput" type="search" placeholder="Поиск новостей...">
         <button type="submit">Найти</button>
       </form>
       <div id="userMenu" class="user-menu"></div>
@@ -43,20 +44,22 @@
     <section class="news-feed" aria-labelledby="feedTitle">
       <div class="section-heading">
         <h2 id="feedTitle">Лента новостей</h2>
+        <a href="admin.html" id="adminLink" style="display: none;">Админ-панель</a>
       </div>
       <div id="newsGrid" class="news-grid"></div>
+      <div id="pagination" class="pagination"></div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p>&copy; 2026 Qala News.</p>
+    <p>&copy; 2026 Qala News. Все права защищены.</p>
     <nav aria-label="Социальные сети">
-      <a href="https://t.me/+Urut7VPDKbQxYmI6">Telegram</a>
-      <a href="https://www.instagram.com/bekzhanovsayss?igsh=MWJ6Z3Zsa282enZwcg==">Instagram</a>
+      <a href="https://t.me/+Urut7VPDKbQxYmI6" target="_blank">Telegram</a>
+      <a href="https://www.instagram.com/bekzhanovsayss?igsh=MWJ6Z3Zsa282enZwcg==" target="_blank">Instagram</a>
     </nav>
   </footer>
 
-  <script src="api.js"></script>
-  <script src="app.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>

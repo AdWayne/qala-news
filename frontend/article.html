@@ -3,23 +3,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Статья - Qala News</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Qala News - Читать новость</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header class="site-header">
     <div class="topbar">
       <a class="logo" href="index.html" aria-label="Qala News на главную">Qala<span>News</span></a>
-      <button class="nav-toggle" type="button" aria-label="Открыть меню" aria-expanded="false">Menu</button>
+      <button class="nav-toggle" type="button" aria-label="Открыть меню" aria-expanded="false">☰</button>
       <nav class="main-nav" aria-label="Основная навигация">
         <a href="index.html">Все</a>
         <a href="index.html?category=Политика">Политика</a>
         <a href="index.html?category=Экономика">Экономика</a>
         <a href="index.html?category=Спорт">Спорт</a>
+        <a href="index.html?category=Культура">Культура</a>
       </nav>
-      <form class="search" role="search">
+      <form class="search" role="search" id="searchForm">
         <label class="visually-hidden" for="searchInput">Поиск новостей</label>
-        <input id="searchInput" type="search" placeholder="Поиск">
+        <input id="searchInput" type="search" placeholder="Поиск новостей...">
         <button type="submit">Найти</button>
       </form>
       <div id="userMenu" class="user-menu"></div>
@@ -27,18 +28,20 @@
   </header>
 
   <main class="article-shell">
-    <article id="articleRoot" class="article-page"></article>
+    <article class="article-page" id="articleContent">
+      <div class="article-loading">Загрузка...</div>
+    </article>
   </main>
 
   <footer class="site-footer">
-    <p>&copy; 2026 Qala News.</p>
+    <p>&copy; 2026 Qala News. Все права защищены.</p>
     <nav aria-label="Социальные сети">
-      <a href="https://t.me/+Urut7VPDKbQxYmI6">Telegram</a>
-      <a href="https://www.instagram.com/bekzhanovsayss?igsh=MWJ6Z3Zsa282enZwcg==">Instagram</a>
+      <a href="https://t.me/+Urut7VPDKbQxYmI6" target="_blank">Telegram</a>
+      <a href="https://www.instagram.com/bekzhanovsayss?igsh=MWJ6Z3Zsa282enZwcg==" target="_blank">Instagram</a>
     </nav>
   </footer>
 
-  <script src="api.js"></script>
-  <script src="app.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/article.js"></script>
 </body>
 </html>

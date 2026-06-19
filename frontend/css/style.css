@@ -20,7 +20,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: "Roboto", sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   line-height: 1.55;
 }
 
@@ -54,6 +54,7 @@ textarea {
   white-space: nowrap;
 }
 
+/* Header */
 .site-header {
   position: sticky;
   top: 0;
@@ -117,6 +118,11 @@ textarea {
   font-weight: 700;
 }
 
+.main-nav a.active {
+  color: var(--brand);
+  border-bottom: 2px solid var(--brand);
+}
+
 .search {
   gap: 8px;
 }
@@ -133,13 +139,36 @@ textarea {
   flex: 1;
 }
 
-.search button,
 .primary-button {
+  border: 0;
+  border-radius: 8px;
+  padding: 8px 8px;
+  background: var(--brand);
+  cursor: pointer;
+  color: white;
+  font-weight: 400;
+  height: 50px;
+}
+
+.search button {
   border: 0;
   background: var(--brand);
   color: #fff;
   cursor: pointer;
   font-weight: 700;
+}
+
+.primary-button:hover {
+  background: var(--brand-dark);
+}
+
+.secondary-button {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  padding: 9px 12px;
+  border-radius: var(--radius);
+  cursor: pointer;
 }
 
 .user-menu {
@@ -166,6 +195,12 @@ textarea {
   color: var(--brand-dark);
 }
 
+.user-menu .user-name {
+  font-weight: 700;
+  color: var(--brand);
+}
+
+/* Main */
 .page-shell {
   display: grid;
   gap: 24px;
@@ -200,12 +235,18 @@ textarea {
   font-size: 14px;
 }
 
+/* Featured */
 .featured-card {
   overflow: hidden;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
+  cursor: pointer;
+}
+
+.featured-card:hover {
+  box-shadow: 0 20px 50px rgba(23, 32, 38, 0.12);
 }
 
 .featured-card img {
@@ -246,6 +287,7 @@ time {
   font-size: 14px;
 }
 
+/* Latest */
 .latest-panel,
 .news-feed {
   min-width: 0;
@@ -262,6 +304,12 @@ time {
 .latest-item {
   background: var(--surface);
   padding: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.latest-item:hover {
+  background: #f8f9fa;
 }
 
 .latest-item h3 {
@@ -270,6 +318,7 @@ time {
   line-height: 1.3;
 }
 
+/* News Grid */
 .news-grid {
   display: grid;
   gap: 16px;
@@ -281,6 +330,12 @@ time {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+.news-card:hover {
+  box-shadow: var(--shadow);
 }
 
 .news-card-image img {
@@ -305,14 +360,67 @@ time {
   margin: 0;
 }
 
+.news-card .admin-actions-card {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.news-card .admin-actions-card button {
+  padding: 4px 12px;
+  font-size: 12px;
+  border-radius: 4px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.news-card .admin-actions-card .edit-btn:hover {
+  background: var(--brand);
+  color: white;
+}
+
+.news-card .admin-actions-card .delete-btn:hover {
+  background: var(--danger);
+  color: white;
+}
+
 .empty-state {
   background: var(--surface);
   border: 1px dashed var(--line);
   border-radius: var(--radius);
   padding: 24px;
   color: var(--muted);
+  text-align: center;
 }
 
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background: var(--brand);
+  color: white;
+  border-color: var(--brand);
+}
+
+.pagination button:hover:not(.active) {
+  background: #f0f0f0;
+}
+
+/* Article */
 .article-shell {
   width: min(860px, calc(100% - 32px));
   margin: 28px auto 52px;
@@ -372,38 +480,121 @@ time {
   font-weight: 700;
 }
 
-.site-footer {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: min(1180px, calc(100% - 32px));
-  margin: 0 auto;
-  border-top: 1px solid var(--line);
-  padding: 22px 0;
+.article-loading {
+  text-align: center;
+  padding: 40px;
   color: var(--muted);
 }
 
-.site-footer p {
-  margin: 0;
+/* Admin Stats */
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
-.site-footer nav {
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px;
+  text-align: center;
+}
+
+.stat-card h3 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.stat-card span {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--brand);
+}
+
+.admin-actions {
   display: flex;
-  gap: 14px;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 30px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 30px;
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.modal-close:hover {
+  color: var(--text);
+}
+
+#newsForm label {
+  display: grid;
+  gap: 5px;
+  margin-bottom: 14px;
+  font-weight: 700;
+}
+
+#newsForm input,
+#newsForm select,
+#newsForm textarea {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 9px 12px;
+  font-weight: 400;
+}
+
+#newsForm textarea {
+  resize: vertical;
+}
+
+#newsForm button {
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+/* Auth */
 .auth-shell,
 .access-denied {
   display: grid;
-  min-height: 100vh;
+  min-height: 70vh;
   place-items: center;
   width: min(520px, calc(100% - 32px));
   margin: 0 auto;
   padding: 32px 0;
 }
 
-.auth-card,
-.access-denied section {
+.auth-card {
   width: 100%;
   background: var(--surface);
   border: 1px solid var(--line);
@@ -412,8 +603,7 @@ time {
   padding: 24px;
 }
 
-.auth-card h1,
-.access-denied h1 {
+.auth-card h1 {
   margin: 8px 0 18px;
   font-size: 32px;
   line-height: 1.12;
@@ -455,8 +645,35 @@ time {
 .auth-hint a {
   color: var(--brand-dark);
   font-weight: 700;
+  cursor: pointer;
 }
 
+.auth-hint a:hover {
+  text-decoration: underline;
+}
+
+/* Footer */
+.site-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  border-top: 1px solid var(--line);
+  padding: 22px 0;
+  color: var(--muted);
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.site-footer nav {
+  display: flex;
+  gap: 14px;
+}
+
+/* Responsive */
 @media (min-width: 720px) {
   .topbar {
     grid-template-columns: auto 1fr auto auto;
@@ -512,4 +729,62 @@ time {
   .news-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+}
+
+/* Добавьте в конец файла style.css */
+
+/* Стили для кнопок админа на главной странице */
+.admin-actions-card button {
+  padding: 4px 12px;
+  font-size: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  height: auto;
+}
+
+.admin-actions-card .edit-btn {
+  background: var(--brand) !important;
+  color: white !important;
+  border: 1px solid var(--brand) !important;
+}
+
+.admin-actions-card .edit-btn:hover {
+  background: var(--brand-dark) !important;
+}
+
+.admin-actions-card .delete-btn {
+  background: var(--danger) !important;
+  color: white !important;
+  border: none !important;
+}
+
+.admin-actions-card .delete-btn:hover {
+  background: #a83226 !important;
+}
+
+/* Убираем лишние спаны */
+.news-card .category-pill {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  border-left: 4px solid var(--accent);
+  padding-left: 8px;
+  color: var(--brand-dark);
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+/* Стиль для бейджа "Главная" */
+.news-card-image .featured-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--accent);
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 12px;
+  color: #000;
 }
