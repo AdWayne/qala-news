@@ -379,8 +379,8 @@ class NewsApp {
     if (isAdmin) {
       adminActions = `
         <div class="admin-actions-card" style="margin-top: 10px; display: flex; gap: 8px;">
-          <button class="edit-btn" data-id="${news.id}" style="padding: 4px 12px; font-size: 12px; border-radius: 4px; border: 1px solid var(--line); background: var(--brand); color: white; cursor: pointer;">✏️ Редактировать</button>
-          <button class="delete-btn" data-id="${news.id}" style="padding: 4px 12px; font-size: 12px; border-radius: 4px; border: none; background: var(--danger); color: white; cursor: pointer;">🗑️ Удалить</button>
+          <button class="edit-btn" data-id="${news.id}" style="padding: 4px 12px; font-size: 12px; border-radius: 4px; border: 1px solid var(--line); background: var(--brand); color: white; cursor: pointer;">Редактировать</button>
+          <button class="delete-btn" data-id="${news.id}" style="padding: 4px 12px; font-size: 12px; border-radius: 4px; border: none; background: var(--danger); color: white; cursor: pointer;">Удалить</button>
         </div>
       `;
     }
@@ -389,14 +389,14 @@ class NewsApp {
       <article class="news-card">
         <div class="news-card-image" style="position:relative;">
           <img src="${image}" alt="${news.title}" loading="lazy" onerror="this.src='https://picsum.photos/seed/error${news.id}/800/600'">
-          ${news.is_featured ? '<span style="position:absolute;top:10px;right:10px;background:var(--accent);padding:4px 12px;border-radius:4px;font-weight:700;font-size:12px;color:#000;">⭐ Главная</span>' : ""}
+          ${news.is_featured ? '' : ""}
         </div>
         <div class="news-card-body">
           <div class="category-pill">${categoryName}</div>
           <h3>${news.title}</h3>
           <p>${news.excerpt || news.content?.substring(0, 120) + "..." || ""}</p>
           <time datetime="${news.created_at}">${date}</time>
-          ${news.author_name ? `<span style="color: var(--muted); font-size: 13px;">✍️ ${news.author_name}</span>` : ""}
+          ${news.author_name ? `<span style="color: var(--muted); font-size: 13px;">${news.author_name}</span>` : ""}
           ${adminActions}
         </div>
       </article>

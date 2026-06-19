@@ -106,7 +106,7 @@ class AdminPage {
     if (!menu) return;
 
     menu.innerHTML = `
-      <span class="user-name">👤 ${this.user.username} (админ)</span>
+      <span class="user-name">${this.user.username}</span>
       <button id="logoutBtnHeader" class="logout-btn">Выйти</button>
     `;
 
@@ -204,7 +204,7 @@ class AdminPage {
       <article class="news-card">
         <div class="news-card-image" style="position:relative;">
           <img src="${image}" alt="${news.title}" loading="lazy">
-          ${news.is_featured ? '<span style="position:absolute;top:10px;right:10px;background:var(--accent);padding:4px 12px;border-radius:4px;font-weight:700;font-size:12px;">⭐ Главная</span>' : ""}
+          ${news.is_featured ? '' : ""}
           ${imagesCount > 0 ? `<span style="position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.7);padding:4px 8px;border-radius:4px;color:white;font-size:12px;">📷 ${imagesCount}</span>` : ""}
         </div>
         <div class="news-card-body">
@@ -213,8 +213,8 @@ class AdminPage {
           <p>${news.excerpt || news.content?.substring(0, 120) + "..." || ""}</p>
           <time datetime="${news.created_at}">${date}</time>
           <div class="admin-actions-card" style="margin-top: 10px; display: flex; gap: 8px;">
-            <button class="edit-btn primary-button" data-id="${news.id}" style="padding: 6px 12px; font-size: 13px;">✏️ Редактировать</button>
-            <button class="delete-btn secondary-button" data-id="${news.id}" style="padding: 6px 12px; font-size: 13px; background: var(--danger); color: white; border: none;">🗑️ Удалить</button>
+            <button class="edit-btn primary-button" data-id="${news.id}" style="padding: 6px 12px; font-size: 13px;">Редактировать</button>
+            <button class="delete-btn secondary-button" data-id="${news.id}" style="padding: 6px 12px; font-size: 13px; background: var(--danger); color: white; border: none;">Удалить</button>
           </div>
         </div>
       </article>
