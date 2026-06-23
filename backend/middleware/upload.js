@@ -1,25 +1,20 @@
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
-const { v4: uuidv4 } = require('uuid');
+const os = require('os');
 
-// Создаем папку для загрузок, если её нет
-const uploadDir = path.join(__dirname, '../../frontend/uploads');
-console.log('Upload directory:', uploadDir);
-
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-  console.log('✅ Upload directory created');
-}
+// Используем системную временную папку (на Render это /tmp)
+const tempDir = os.tmpdir();
+console.log('Upload directory configured to use temp dir:', tempDir);
 
 // Настройка хранилища
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, uploadDir);
+    cb(null, tempDir);
   },
   filename: function (req, file, cb) {
     const ext = path.extname(file.originalname);
-    const uniqueName = `${uuidv4()}${ext}`;
+    // Генерируем уникальное имя без сторонних библиотек
+    const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1E9)}${ext}`;
     cb(null, uniqueName);
   }
 });
@@ -53,5 +48,5 @@ module.exports = {
   upload,
   uploadSingle,
   uploadMultiple,
-  uploadDir
+  uploadDir: tempDir // Оставил экспорт для совместимости, если он где-то используется
 };
