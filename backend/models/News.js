@@ -19,13 +19,17 @@ class News {
 
       if (category) {
         params.push(category, category);
-        conditions.push(`(c.slug = $${params.length - 1} OR c.name = $${params.length})`);
+        conditions.push(
+          `(c.slug = $${params.length - 1} OR c.name = $${params.length})`,
+        );
       }
 
       if (search) {
         const searchPattern = `%${search}%`;
         params.push(searchPattern, searchPattern, searchPattern);
-        conditions.push(`(n.title LIKE $${params.length - 2} OR n.content LIKE $${params.length - 1} OR n.excerpt LIKE $${params.length})`);
+        conditions.push(
+          `(n.title LIKE $${params.length - 2} OR n.content LIKE $${params.length - 1} OR n.excerpt LIKE $${params.length})`,
+        );
       }
 
       if (conditions.length > 0) {
@@ -44,19 +48,24 @@ class News {
 
   static async getCount({ category = null, search = null } = {}) {
     try {
-      let query = "SELECT COUNT(*) as count FROM news n LEFT JOIN categories c ON n.category_id = c.id";
+      let query =
+        "SELECT COUNT(*) as count FROM news n LEFT JOIN categories c ON n.category_id = c.id";
       const params = [];
       const conditions = [];
 
       if (category) {
         params.push(category, category);
-        conditions.push(`(c.slug = $${params.length - 1} OR c.name = $${params.length})`);
+        conditions.push(
+          `(c.slug = $${params.length - 1} OR c.name = $${params.length})`,
+        );
       }
 
       if (search) {
         const searchPattern = `%${search}%`;
         params.push(searchPattern, searchPattern, searchPattern);
-        conditions.push(`(n.title LIKE $${params.length - 2} OR n.content LIKE $${params.length - 1} OR n.excerpt LIKE $${params.length})`);
+        conditions.push(
+          `(n.title LIKE $${params.length - 2} OR n.content LIKE $${params.length - 1} OR n.excerpt LIKE $${params.length})`,
+        );
       }
 
       if (conditions.length > 0) {
@@ -79,12 +88,14 @@ class News {
          LEFT JOIN users u ON n.author_id = u.id
          LEFT JOIN categories c ON n.category_id = c.id
          WHERE n.id = $1`,
-        [id]
+        [id],
       );
 
       if (news) {
-        await db.runAsync("UPDATE news SET views = views + 1 WHERE id = $1", [id]);
-        if (typeof news.images === 'string') {
+        await db.runAsync("UPDATE news SET views = views + 1 WHERE id = $1", [
+          id,
+        ]);
+        if (typeof news.images === "string") {
           news.images = JSON.parse(news.images);
         }
       }
@@ -105,7 +116,7 @@ class News {
          LEFT JOIN categories c ON n.category_id = c.id
          WHERE n.is_featured = true
          ORDER BY n.created_at DESC
-         LIMIT 1`
+         LIMIT 1`,
       );
     } catch (error) {
       console.error("Error getting featured news:", error);
@@ -122,7 +133,7 @@ class News {
          LEFT JOIN categories c ON n.category_id = c.id
          ORDER BY n.created_at DESC
          LIMIT $1`,
-        [limit]
+        [limit],
       );
     } catch (error) {
       console.error("Error getting latest news:", error);
@@ -131,11 +142,24 @@ class News {
   }
 
   static async create(newsData) {
-    const { title, content, excerpt, category_id, image_url, images, tags, author_id, is_featured = false } = newsData;
+    const {
+      title,
+      content,
+      excerpt,
+      category_id,
+      image_url,
+      images,
+      tags,
+      author_id,
+      is_featured = false,
+    } = newsData;
     try {
       let category_name = null;
       if (category_id) {
-        const category = await db.getAsync("SELECT name FROM categories WHERE id = $1", [category_id]);
+        const category = await db.getAsync(
+          "SELECT name FROM categories WHERE id = $1",
+          [category_id],
+        );
         if (category) category_name = category.name;
       }
 
@@ -143,7 +167,18 @@ class News {
       const result = await db.runAsync(
         `INSERT INTO news (title, content, excerpt, category_id, category_name, image_url, images, tags, author_id, is_featured)
          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id`,
-        [title, content, excerpt || content.substring(0, 200), category_id || null, category_name, image_url || null, imagesJson, tags || null, author_id, is_featured]
+        [
+          title,
+          content,
+          excerpt || content.substring(0, 200),
+          category_id || null,
+          category_name,
+          image_url || null,
+          imagesJson,
+          tags || null,
+          author_id,
+          is_featured,
+        ],
       );
 
       return await News.getById(result.rows[0]?.id || result.lastID);
@@ -154,16 +189,28 @@ class News {
   }
 
   static async update(id, newsData) {
-    const { title, content, excerpt, category_id, image_url, images, tags, is_featured } = newsData;
+    const {
+      title,
+      content,
+      excerpt,
+      category_id,
+      image_url,
+      images,
+      tags,
+      is_featured,
+    } = newsData;
     try {
       let category_name = null;
       if (category_id) {
-        const category = await db.getAsync("SELECT name FROM categories WHERE id = $1", [category_id]);
+        const category = await db.getAsync(
+          "SELECT name FROM categories WHERE id = $1",
+          [category_id],
+        );
         if (category) category_name = category.name;
       }
 
       const imagesJson = images ? JSON.stringify(images) : null;
-      
+
       await db.runAsync(
         `UPDATE news SET 
             title = COALESCE($1, title),
@@ -177,7 +224,18 @@ class News {
             is_featured = COALESCE($9, is_featured),
             updated_at = CURRENT_TIMESTAMP
          WHERE id = $10`,
-        [title, content, excerpt, category_id, category_name, image_url, imagesJson, tags, is_featured, id]
+        [
+          title,
+          content,
+          excerpt,
+          category_id,
+          category_name,
+          image_url,
+          imagesJson,
+          tags,
+          is_featured,
+          id,
+        ],
       );
       return await News.getById(id);
     } catch (error) {
@@ -192,6 +250,18 @@ class News {
       return true;
     } catch (error) {
       console.error("Error deleting news:", error);
+      throw error;
+    }
+  }
+
+  static async getCategories() {
+    try {
+      const categories = await db.allAsync(
+        "SELECT DISTINCT category_name FROM news WHERE category_name IS NOT NULL ORDER BY category_name",
+      );
+      return categories.map((c) => c.category_name);
+    } catch (error) {
+      console.error("Error getting categories:", error);
       throw error;
     }
   }
