@@ -27,8 +27,6 @@
   scroll-snap-type: x mandatory; /* Включаем "прилипание" слайдов */
   -webkit-overflow-scrolling: touch; /* Плавный скролл на мобильных устройствах iOS */
   padding-bottom: 15px; /* Отступ для скроллбара */
-  align-items: center;
-  justify-content: center;
 }
 
 /* Настройка внешнего вида ползунка (скроллбара) */
