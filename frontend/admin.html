@@ -91,6 +91,17 @@
             Теги (через запятую)
             <input type="text" id="newsTags" placeholder="тег1, тег2, тег3" />
           </label>
+          <label
+            style="
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              margin: 15px 0;
+            "
+          >
+            <input type="checkbox" id="newsFeatured" value="1" />
+            Сделать главной новостью (Featured)
+          </label>
           <div id="imagePreview" class="image-preview"></div>
           <button type="submit" class="primary-button">Сохранить</button>
           <button type="button" id="cancelBtn" class="secondary-button">
@@ -111,8 +122,8 @@
         <form id="categoryForm">
           <label>
             Название
-            <input type="text" id="categoryName" required />
-          </label><br>
+            <input type="text" id="categoryName" required /> </label
+          ><br />
           <label>
             Slug (уникальный идентификатор)
             <input
@@ -121,15 +132,16 @@
               required
               placeholder="naprimer-tak"
             />
-          </label> <br>
+          </label>
+          <br />
           <label>
             Описание
-            <textarea id="categoryDescription" rows="2"></textarea>
-          </label><br>
+            <textarea id="categoryDescription" rows="2"></textarea></label
+          ><br />
           <label>
             Иконка (emoji)
-            <input type="text" id="categoryIcon" placeholder="🏛️" />
-          </label><br>
+            <input type="text" id="categoryIcon" placeholder="🏛️" /> </label
+          ><br />
           <button type="submit" class="primary-button">
             Создать категорию
           </button>

@@ -181,7 +181,7 @@ class AdminPage {
 
   renderAdminCard(news) {
     const image =
-      news.image_url || "https://picsum.photos/seed/${news.id}/800/600";
+      news.image_url || `https://picsum.photos/seed/${news.id}/800/600`;
     const date = new Date(news.created_at).toLocaleDateString("ru-RU", {
       day: "numeric",
       month: "short",
@@ -200,17 +200,22 @@ class AdminPage {
       }
     }
 
+    // Добавляем стиль для рамки, если новость главная
+    const cardStyle = news.is_featured ? "border: 2px solid gold;" : "";
+
     return `
-      <article class="news-card">
+      <article class="news-card" style="${cardStyle}">
         <div class="news-card-image" style="position:relative;">
           <img src="${image}" alt="${news.title}" loading="lazy">
-          ${news.is_featured ? '' : ""}
+          
+          ${news.is_featured ? '<span style="position:absolute;top:10px;left:10px;background:gold;padding:4px 8px;border-radius:4px;font-weight:bold;font-size:12px;">ГЛАВНАЯ</span>' : ""}
+          
           ${imagesCount > 0 ? `<span style="position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.7);padding:4px 8px;border-radius:4px;color:white;font-size:12px;">📷 ${imagesCount}</span>` : ""}
         </div>
         <div class="news-card-body">
           <div class="category-pill">${news.category_name || news.category || "Без категории"}</div>
           <h3>${news.title}</h3>
-          <p>${news.excerpt || news.content?.substring(0, 120) + "..." || ""}</p>
+          <p>${news.excerpt || (news.content ? news.content.substring(0, 120) + "..." : "")}</p>
           <time datetime="${news.created_at}">${date}</time>
           <div class="admin-actions-card" style="margin-top: 10px; display: flex; gap: 8px;">
             <button class="edit-btn primary-button" data-id="${news.id}" style="padding: 6px 12px; font-size: 13px;">Редактировать</button>
@@ -328,6 +333,8 @@ class AdminPage {
       document.getElementById("newsContent").value = news.content || "";
       document.getElementById("newsExcerpt").value = news.excerpt || "";
       document.getElementById("newsTags").value = news.tags || "";
+      document.getElementById("newsFeatured").checked =
+        news.is_featured === 1 || news.is_featured === true;
 
       // Показываем существующие изображения
       let images = [];
@@ -356,6 +363,7 @@ class AdminPage {
     } else {
       title.textContent = "Создать новость";
       this.editingId = null;
+      document.getElementById("newsFeatured").checked = false;
     }
 
     modal.style.display = "flex";
@@ -393,7 +401,10 @@ class AdminPage {
       formData.append("content", content);
       formData.append("excerpt", excerpt || content.substring(0, 200));
       formData.append("tags", tags || "");
-      formData.append("is_featured", "0");
+      const isFeatured = document.getElementById("newsFeatured").checked
+        ? "1"
+        : "0";
+      formData.append("is_featured", isFeatured);
 
       // Добавляем файлы изображений
       const fileInput = document.getElementById("newsImages");
