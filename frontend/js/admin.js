@@ -8,6 +8,10 @@ class AdminPage {
     this.categories = [];
     this.uploadedImages = [];
 
+    // Массивы для управления фотографиями
+    this.existingImages = []; // Ранее загруженные фото из базы данных
+    this.newFiles = [];       // Новые файлы из инпута
+
     this.init();
   }
 
@@ -200,7 +204,6 @@ class AdminPage {
       }
     }
 
-    // Добавляем стиль для рамки, если новость главная
     const cardStyle = news.is_featured ? "border: 2px solid gold;" : "";
 
     return `
@@ -294,25 +297,89 @@ class AdminPage {
   }
 
   previewImages(files) {
+    this.newFiles = Array.from(files);
+    this.renderPreviews();
+  }
+
+  renderPreviews() {
     const container = document.getElementById("imagePreview");
     if (!container) return;
     container.innerHTML = "";
+    container.style.display = "flex";
+    container.style.flexWrap = "wrap";
+    container.style.gap = "15px";
 
-    Array.from(files).forEach((file) => {
+    // 1. Рендерим старые фото из базы данных
+    this.existingImages.forEach((imgUrl, index) => {
+      const wrapper = this.createPreviewElement(imgUrl, false, index);
+      container.appendChild(wrapper);
+    });
+
+    // 2. Рендерим новые файлы, выбранные через проводник
+    this.newFiles.forEach((file, index) => {
       const reader = new FileReader();
       reader.onload = (e) => {
-        const img = document.createElement("img");
-        img.src = e.target.result;
-        img.style.width = "100px";
-        img.style.height = "100px";
-        img.style.objectFit = "cover";
-        img.style.margin = "5px";
-        img.style.borderRadius = "4px";
-        img.style.border = "1px solid var(--line)";
-        container.appendChild(img);
+        const wrapper = this.createPreviewElement(e.target.result, true, index);
+        container.appendChild(wrapper);
       };
       reader.readAsDataURL(file);
     });
+  }
+
+  createPreviewElement(src, isNew, index) {
+    const wrapper = document.createElement("div");
+    wrapper.style.position = "relative";
+    wrapper.style.width = "100px";
+    wrapper.style.height = "100px";
+
+    const img = document.createElement("img");
+    img.src = src;
+    img.style.width = "100%";
+    img.style.height = "100%";
+    img.style.objectFit = "cover";
+    img.style.borderRadius = "6px";
+    img.style.border = "1px solid var(--line)";
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.innerHTML = "✖";
+    deleteBtn.style.position = "absolute";
+    deleteBtn.style.top = "-8px";
+    deleteBtn.style.right = "-8px";
+    deleteBtn.style.background = "var(--danger, #ef4444)";
+    deleteBtn.style.color = "white";
+    deleteBtn.style.border = "none";
+    deleteBtn.style.borderRadius = "50%";
+    deleteBtn.style.width = "24px";
+    deleteBtn.style.height = "24px";
+    deleteBtn.style.cursor = "pointer";
+    deleteBtn.style.fontSize = "12px";
+    deleteBtn.style.display = "flex";
+    deleteBtn.style.alignItems = "center";
+    deleteBtn.style.justifyContent = "center";
+    deleteBtn.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";
+
+    deleteBtn.onclick = (e) => {
+      e.preventDefault();
+      if (isNew) {
+        // Удаляем элемент из локального массива
+        this.newFiles.splice(index, 1);
+        
+        // Синхронизируем изменения с нативным свойством инпута .files
+        const dt = new DataTransfer();
+        this.newFiles.forEach(file => dt.items.add(file));
+        const fileInput = document.getElementById("newsImages");
+        if (fileInput) fileInput.files = dt.files;
+      } else {
+        // Удаляем элемент из массива старых изображений
+        this.existingImages.splice(index, 1);
+      }
+      // Перерисовываем блок превью
+      this.renderPreviews();
+    };
+
+    wrapper.appendChild(img);
+    wrapper.appendChild(deleteBtn);
+    return wrapper;
   }
 
   openNewsModal(news = null) {
@@ -323,7 +390,7 @@ class AdminPage {
 
     if (!modal || !form) return;
 
-    preview.innerHTML = "";
+    if (preview) preview.innerHTML = "";
     form.reset();
 
     if (news) {
@@ -336,34 +403,23 @@ class AdminPage {
       document.getElementById("newsFeatured").checked =
         news.is_featured === 1 || news.is_featured === true;
 
-      // Показываем существующие изображения
-      let images = [];
+      // Парсим существующие картинки
       try {
-        images =
+        this.existingImages =
           typeof news.images === "string"
             ? JSON.parse(news.images)
             : news.images || [];
       } catch (e) {
-        images = [];
+        this.existingImages = [];
       }
-
-      if (images.length > 0) {
-        images.forEach((img) => {
-          const imgEl = document.createElement("img");
-          imgEl.src = img;
-          imgEl.style.width = "100px";
-          imgEl.style.height = "100px";
-          imgEl.style.objectFit = "cover";
-          imgEl.style.margin = "5px";
-          imgEl.style.borderRadius = "4px";
-          imgEl.style.border = "1px solid var(--line)";
-          preview.appendChild(imgEl);
-        });
-      }
+      this.newFiles = [];
+      this.renderPreviews();
     } else {
       title.textContent = "Создать новость";
       this.editingId = null;
       document.getElementById("newsFeatured").checked = false;
+      this.existingImages = [];
+      this.newFiles = [];
     }
 
     modal.style.display = "flex";
@@ -377,6 +433,8 @@ class AdminPage {
     const preview = document.getElementById("imagePreview");
     if (preview) preview.innerHTML = "";
     this.editingId = null;
+    this.existingImages = [];
+    this.newFiles = [];
   }
 
   async saveNews() {
@@ -384,7 +442,6 @@ class AdminPage {
       const form = document.getElementById("newsForm");
       const formData = new FormData();
 
-      // Добавляем все поля в FormData вручную
       const title = document.getElementById("newsTitle").value.trim();
       const category_id = document.getElementById("newsCategory").value;
       const content = document.getElementById("newsContent").value.trim();
@@ -401,12 +458,10 @@ class AdminPage {
       formData.append("content", content);
       formData.append("excerpt", excerpt || content.substring(0, 200));
       formData.append("tags", tags || "");
-      const isFeatured = document.getElementById("newsFeatured").checked
-        ? "1"
-        : "0";
+      const isFeatured = document.getElementById("newsFeatured").checked ? "1" : "0";
       formData.append("is_featured", isFeatured);
 
-      // Добавляем файлы изображений
+      // Добавляем файлы изображений, которые остались после удаления
       const fileInput = document.getElementById("newsImages");
       if (fileInput && fileInput.files.length > 0) {
         console.log("📸 Adding files:", fileInput.files.length);
@@ -415,28 +470,21 @@ class AdminPage {
           console.log(`  📸 File ${i + 1}:`, fileInput.files[i].name);
         }
       } else {
-        console.log("⚠️ No files selected");
+        console.log("⚠️ No new files selected or all were removed");
       }
 
-      // Логируем все данные формы
       for (let pair of formData.entries()) {
         console.log("📝 FormData:", pair[0], pair[1]);
       }
 
       let result;
       if (this.editingId) {
-        // Для редактирования добавляем существующие изображения
-        const currentNews = await api.getNewsById(this.editingId);
-        if (
-          currentNews &&
-          currentNews.images &&
-          currentNews.images.length > 0
-        ) {
-          formData.append(
-            "existing_images",
-            JSON.stringify(currentNews.images),
-          );
-          console.log("📸 Existing images:", currentNews.images);
+        // Передаем отфильтрованный массив старых фото, которые пользователь НЕ удалил
+        if (this.existingImages.length > 0) {
+          formData.append("existing_images", JSON.stringify(this.existingImages));
+          console.log("📸 Existing images kept:", this.existingImages);
+        } else {
+          formData.append("existing_images", "[]");
         }
         result = await api.updateNewsWithImages(this.editingId, formData);
       } else {

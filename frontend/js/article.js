@@ -77,6 +77,18 @@ class ArticlePage {
 
       ${heroImage ? `<img src="${heroImage}" alt="${news.title}" class="article-hero">` : ""}
       
+      ${
+        additionalImages.length > 0
+          ? `
+        <div class="carousel-container">
+          <div class="carousel-track">
+            ${additionalImages.map((img) => `<img src="${img}" alt="Доп. фото" class="carousel-slide" loading="lazy">`).join("")}
+          </div>
+        </div>
+      `
+          : ""
+      }
+
       <div class="article-content">
         ${
           news.content
@@ -88,16 +100,6 @@ class ArticlePage {
             : "<p>Содержание отсутствует</p>"
         }
       </div>
-
-      ${
-        additionalImages.length > 0
-          ? `
-        <div class="article-gallery" style="margin: 20px 0;">
-          ${additionalImages.map((img) => `<img src="${img}" alt="Доп. фото" style="max-width: 100%; margin-bottom: 10px; display: block;">`).join("")}
-        </div>
-      `
-          : ""
-      }
 
       ${
         tags.length > 0

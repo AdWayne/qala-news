@@ -12,6 +12,64 @@
   --radius: 8px;
 }
 
+/* --- КАРУСЕЛЬ ФОТОГРАФИЙ --- */
+
+.carousel-container {
+  width: 100%;
+  margin: 30px 0;
+  position: relative;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Настройка внешнего вида ползунка (скроллбара) */
+.carousel-track::-webkit-scrollbar {
+  height: 8px;
+}
+
+.carousel-track::-webkit-scrollbar-track {
+  background: var(
+    --line,
+    #e2e8f0
+  ); /* Используй свою переменную для линий или серый цвет */
+  border-radius: 4px;
+}
+
+.carousel-track::-webkit-scrollbar-thumb {
+  background: var(
+    --brand,
+    #2563eb
+  ); /* Используй свою переменную цвета бренда */
+  border-radius: 4px;
+}
+
+.carousel-track::-webkit-scrollbar-thumb:hover {
+  background: #1d4ed8; /* Цвет при наведении */
+}
+
+/* Сами фотографии */
+.carousel-slide {
+  flex: 0 0 85%; /* Фото занимает 85% ширины контейнера, чтобы было видно следующую */
+  max-height: 400px;
+  object-fit: cover; /* Изображение не будет сплющиваться */
+  border-radius: 12px;
+  scroll-snap-align: center; /* При скролле фото центрируется */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Для больших экранов (компьютеров) делаем слайды поменьше */
+@media (min-width: 768px) {
+  .carousel-slide {
+    flex: 0 0 60%;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
